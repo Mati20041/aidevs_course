@@ -1,5 +1,5 @@
 import {fetchTask, fetchToken, submitAnswer} from "../aidevsApi/aiDevsApi.js";
-import {chat, moderate} from "../openai/openAiApi.js";
+import {chat} from "../openai/openAiApi.js";
 import {extractReplyAsync, system, user} from "../openai/chatGenerators.js";
 
 interface Task {
@@ -12,7 +12,6 @@ interface Task {
 export async function main03() {
     const token = await fetchToken('inprompt');
     const task = await fetchTask<Task>(token);
-    console.log(task.input.filter(it => it.indexOf('Ezaw')!==-1))
     console.log(task.question)
 
     const chatAboutName = await chat([
@@ -28,9 +27,9 @@ export async function main03() {
 
     const nameInQuestion = chatAboutName.choices[0].message.content
     console.log(nameInQuestion)
-    const sentenceWithName = task.input.find(it => it.indexOf(nameInQuestion)!==-1)
+    const sentenceWithName = task.input.find(it => it.indexOf(nameInQuestion) !== -1)
 
-    if(!sentenceWithName) {
+    if (!sentenceWithName) {
         throw Error(`Couldn't find a sentence with name "${sentenceWithName}"`)
     }
 
