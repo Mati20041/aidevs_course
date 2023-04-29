@@ -1,9 +1,13 @@
-import fetch from "node-fetch";
+import fetch, {Response} from "node-fetch";
 
 const url = 'https://zadania.aidevs.pl'
 const apikey = process.env.AIDEVS_API_KEY
 
-export async function fetchToken(taskName: string) {
+export interface TokenResponse {
+    token: string
+}
+
+export async function fetchToken(taskName: string): Promise<string> {
     const tokenResponse = await fetch(`${url}/token/${taskName}`, {
         method: 'POST',
         headers: {
@@ -11,7 +15,7 @@ export async function fetchToken(taskName: string) {
         },
         body: JSON.stringify({apikey})
     })
-    return ((await tokenResponse.json()) as { token: string }).token;
+    return ((await tokenResponse.json()) as TokenResponse).token;
 }
 
 export async function fetchTask<T>(token: string): Promise<T> {
@@ -19,7 +23,7 @@ export async function fetchTask<T>(token: string): Promise<T> {
     return (await taskResponse.json()) as T;
 }
 
-export async function submitAnswer(token: string, answer: unknown) {
+export async function submitAnswer(token: string, answer: unknown): Promise<Response> {
     return await fetch(`${url}/answer/${token}`, {
         method: 'POST',
         headers: {
