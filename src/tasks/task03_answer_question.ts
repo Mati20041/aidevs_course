@@ -12,7 +12,7 @@ interface Task {
 export async function main03() {
     const token = await fetchToken('inprompt');
     const task = await fetchTask<Task>(token);
-    console.log(task.question)
+    console.log(JSON.stringify(task, null, 0))
 
     const chatAboutName = await chat([
         system(`
@@ -47,3 +47,5 @@ export async function main03() {
         console.error('PORAŻKA!!!')
     }
 }
+
+// const taskResponse = {"code":0,"msg":"remember information about each person and then answer the question","input":["Abdon ma czarne oczy, średniej długości włosy i pracuje jako prawnik, a na śniadanie najbardziej lubi jeść owsiankę", "<NEXT PHRASES>"],"question":"co lubi jeść na śniadanie Alojzy?"}
