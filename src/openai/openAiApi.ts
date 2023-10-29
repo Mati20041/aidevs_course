@@ -27,7 +27,7 @@ export async function chat(messages: ChatMessage[], options: ChatOptions = {}) {
         body: JSON.stringify({
             "model": "gpt-3.5-turbo",
             ...options,
-            messages
+
         })
     })
     return (await result.json()) as ChatResult
